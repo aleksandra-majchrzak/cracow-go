@@ -8,12 +8,17 @@ import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.cracowgo.cracowgo.R;
+import com.cracowgo.cracowgo.server.CracowGoService;
+import com.cracowgo.cracowgo.server.entities.RegisterResponse;
+import com.cracowgo.cracowgo.server.entities.User;
+import com.cracowgo.cracowgo.server.listeners.SignInSubscriberListener;
+import com.cracowgo.cracowgo.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements SignInSubscriberListener {
 
     @BindView(R.id.email_editText)
     EditText emailEditText;
@@ -50,9 +55,42 @@ public class SignInActivity extends AppCompatActivity {
             return;
         }
 
-        finish();
+        User user = new User(email, password);
+
+        CracowGoService.getInstance().signIn(user, this);
+    }
+
+    @Override
+    public void onSignInCompleted(RegisterResponse registerResponse) {
+
+        getSharedPreferences(Constants.SHARED_PREFERENCES, 0)
+                .edit()
+                .putString(Constants.userEmail, registerResponse.getUser().getEmail())
+                .putString(Constants.accessToken, registerResponse.getHeaders().getAccessToken())
+                .putString(Constants.tokenType, registerResponse.getHeaders().getTokenType())
+                .putString(Constants.client, registerResponse.getHeaders().getClient())
+                .putString(Constants.expiry, registerResponse.getHeaders().getExpiry())
+                .putString(Constants.uid, registerResponse.getHeaders().getUid())
+                .commit();
 
         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
         startActivity(intent);
+
+        finish();
+    }
+
+    @Override
+    public void onSignInError() {
+        Snackbar.make(findViewById(R.id.activity_sign_in), "Sign in error", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionError() {
+        Snackbar.make(findViewById(R.id.activity_sign_in), R.string.connection_offline, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUnknownError() {
+        Snackbar.make(findViewById(R.id.activity_sign_in), R.string.error_occurred, Snackbar.LENGTH_SHORT).show();
     }
 }

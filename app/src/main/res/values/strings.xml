@@ -16,4 +16,6 @@
     <string name="welcome_to">Welcome to</string>
     <string name="confirm_password">CONFIRM PASSWORD</string>
     <string name="password_confirmation_must_be_identical">Password and confirmation must be identical.</string>
+    <string name="connection_offline">Internet connection seems to be offline.</string>
+    <string name="error_occurred">Error occurred.</string>
 </resources>
