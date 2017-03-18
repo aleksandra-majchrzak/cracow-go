@@ -5,4 +5,15 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="register">REGISTER</string>
+    <string name="password">PASSWORD</string>
+    <string name="email">EMAIL</string>
+    <string name="email_cannot_be_empty">Email cannot be empty</string>
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
+    <string name="password_must_be_longer">Password must be longer than 6 characters.</string>
+    <string name="incorrect_mail_format">Incorrect mail format.</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="confirm_password">CONFIRM PASSWORD</string>
+    <string name="password_confirmation_must_be_identical">Password and confirmation must be identical.</string>
 </resources>

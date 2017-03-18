@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
-        android:text="Welcome to"
+        android:text="@string/welcome_to"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_alignStart="@+id/register_button"
         android:layout_alignTop="@+id/register_button"
         android:layout_marginTop="63dp"
-        android:text="SIGN IN" />
+        android:text="@string/sign_in" />
 
     <Button
         android:id="@+id/register_button"
@@ -48,5 +48,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="140dp"
-        android:text="REGISTER" />
+        android:text="@string/register" />
 </RelativeLayout>
