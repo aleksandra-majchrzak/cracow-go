@@ -13,6 +13,9 @@ public class User {
     private String password;
     @SerializedName("password_confirmation")
     private String passwordConfirmation;
+    @SerializedName("year_of_birth")
+    private String birthDate;
+    private String nationality;
 
 
     public User() {
@@ -39,5 +42,21 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 }

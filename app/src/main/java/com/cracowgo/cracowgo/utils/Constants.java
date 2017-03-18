@@ -8,6 +8,7 @@ public class Constants {
 
     public static final String SHARED_PREFERENCES = "cracow_go_shared";
 
+    public static final String userId = "userId";
     public static final String userEmail = "userEmail";
     public static final String accessToken = "access-token";
     public static final String tokenType = "token-type";

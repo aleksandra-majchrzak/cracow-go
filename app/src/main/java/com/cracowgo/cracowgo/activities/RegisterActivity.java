@@ -75,6 +75,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterSubsc
     public void onRegistrationCompleted(RegisterResponse registerResponse) {
         getSharedPreferences(Constants.SHARED_PREFERENCES, 0)
                 .edit()
+                .putInt(Constants.userId, registerResponse.getUser().getId())
                 .putString(Constants.userEmail, registerResponse.getUser().getEmail())
                 .putString(Constants.accessToken, registerResponse.getHeaders().getAccessToken())
                 .putString(Constants.tokenType, registerResponse.getHeaders().getTokenType())
@@ -84,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterSubsc
                 .commit();
 
 
-        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, PreferencesActivity.class);
         startActivity(intent);
 
         finish();

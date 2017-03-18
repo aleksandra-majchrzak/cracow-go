@@ -65,6 +65,7 @@ public class SignInActivity extends AppCompatActivity implements SignInSubscribe
 
         getSharedPreferences(Constants.SHARED_PREFERENCES, 0)
                 .edit()
+                .putInt(Constants.userId, registerResponse.getUser().getId())
                 .putString(Constants.userEmail, registerResponse.getUser().getEmail())
                 .putString(Constants.accessToken, registerResponse.getHeaders().getAccessToken())
                 .putString(Constants.tokenType, registerResponse.getHeaders().getTokenType())

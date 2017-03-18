@@ -3,8 +3,12 @@ package com.cracowgo.cracowgo.server;
 import com.cracowgo.cracowgo.server.entities.User;
 import com.cracowgo.cracowgo.server.listeners.RegisterSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.SignInSubscriberListener;
+import com.cracowgo.cracowgo.server.listeners.UpdateUserSubscriberListener;
 import com.cracowgo.cracowgo.server.subscribers.RegisterSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.SignInSubscriber;
+import com.cracowgo.cracowgo.server.subscribers.UpdateUserSubscriber;
+
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -60,5 +64,13 @@ public class CracowGoService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SignInSubscriber(user, listener));
     }
+
+    public Subscription updateUser(User user, UpdateUserSubscriberListener listener, Map<String, String> headers) {
+        return mApi.updateUser(headers, user.getId(), user)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new UpdateUserSubscriber(user, listener));
+    }
+
 
 }
