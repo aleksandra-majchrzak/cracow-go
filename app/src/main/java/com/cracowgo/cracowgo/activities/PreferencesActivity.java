@@ -12,8 +12,8 @@ import com.cracowgo.cracowgo.server.CracowGoService;
 import com.cracowgo.cracowgo.server.entities.User;
 import com.cracowgo.cracowgo.server.listeners.UpdateUserSubscriberListener;
 import com.cracowgo.cracowgo.utils.Constants;
+import com.cracowgo.cracowgo.utils.HeadersGenerator;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -46,13 +46,7 @@ public class PreferencesActivity extends AppCompatActivity implements UpdateUser
         User user = new User();
 
         SharedPreferences prefs = getSharedPreferences(Constants.SHARED_PREFERENCES, 0);
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/json; charset=UTF-8");
-        headers.put(Constants.accessToken, prefs.getString(Constants.accessToken, ""));
-        headers.put(Constants.tokenType, prefs.getString(Constants.tokenType, ""));
-        headers.put(Constants.client, prefs.getString(Constants.client, ""));
-        headers.put(Constants.expiry, prefs.getString(Constants.expiry, ""));
-        headers.put(Constants.uid, prefs.getString(Constants.uid, ""));
+        Map<String, String> headers = HeadersGenerator.getHeaders(this);
 
         user.setId(prefs.getInt(Constants.userId, 0));
         user.setBirthDate(birthYear);
@@ -63,7 +57,7 @@ public class PreferencesActivity extends AppCompatActivity implements UpdateUser
 
     @Override
     public void onUpdateUserCompleted() {
-        Intent intent = new Intent(PreferencesActivity.this, MainActivity.class);
+        Intent intent = new Intent(PreferencesActivity.this, TagsActivity.class);
         startActivity(intent);
     }
 

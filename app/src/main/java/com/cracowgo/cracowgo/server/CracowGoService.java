@@ -1,9 +1,11 @@
 package com.cracowgo.cracowgo.server;
 
 import com.cracowgo.cracowgo.server.entities.User;
+import com.cracowgo.cracowgo.server.listeners.GetTagsSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.RegisterSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.SignInSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.UpdateUserSubscriberListener;
+import com.cracowgo.cracowgo.server.subscribers.GetTagsSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.RegisterSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.SignInSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.UpdateUserSubscriber;
@@ -72,5 +74,11 @@ public class CracowGoService {
                 .subscribe(new UpdateUserSubscriber(user, listener));
     }
 
+    public Subscription getTags(Map<String, String> headers, GetTagsSubscriberListener listener) {
+        return mApi.getTags(headers)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new GetTagsSubscriber(listener));
+    }
 
 }

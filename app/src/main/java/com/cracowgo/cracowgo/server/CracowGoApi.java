@@ -1,5 +1,6 @@
 package com.cracowgo.cracowgo.server;
 
+import com.cracowgo.cracowgo.server.entities.Tag;
 import com.cracowgo.cracowgo.server.entities.User;
 
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
-import retrofit2.http.Header;
+import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -28,4 +29,7 @@ public interface CracowGoApi {
 
     @PUT("/users/{id}")
     Observable<ResponseBody> updateUser(@HeaderMap Map<String, String> headers, @Path("id") int userId, @Body User user);
+
+    @GET("/tags")
+    Observable<Tag[]> getTags(@HeaderMap Map<String, String> headers);
 }

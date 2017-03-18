@@ -75,9 +75,8 @@ public class SignInActivity extends AppCompatActivity implements SignInSubscribe
                 .commit();
 
         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
-        finish();
     }
 
     @Override
