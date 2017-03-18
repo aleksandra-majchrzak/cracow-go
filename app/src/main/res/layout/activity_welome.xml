@@ -33,6 +33,7 @@
 
     <Button
         android:id="@+id/signin_button"
+        style="@style/MainButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/register_button"
@@ -43,6 +44,7 @@
 
     <Button
         android:id="@+id/register_button"
+        style="@style/MainButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
