@@ -103,11 +103,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_locations) {
-            // Handle the camera action
             Intent intent = new Intent(MainActivity.this, LocationsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_tags) {
-
+            Intent intent = new Intent(MainActivity.this, TagsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
 
         }
