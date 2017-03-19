@@ -13,6 +13,7 @@ import com.cracowgo.cracowgo.server.subscribers.RegisterSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.SignInSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.UpdateUserSubscriber;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -93,4 +94,15 @@ public class CracowGoService {
                 .subscribe(new GetLocationsForTagSubscriber(listener));
     }
 
+    public Subscription getAllNearbyLocations(Map<String, String> headers, double latitude, double longitude, GetLocationsForTagSubscriberListener listener) {
+
+        Map<String, String> options = new HashMap<>();
+        options.put("latitude", String.valueOf(latitude));
+        options.put("longitude", String.valueOf(longitude));
+
+        return mApi.getAllNearbyLocations(headers, options)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new GetLocationsForTagSubscriber(listener));
+    }
 }

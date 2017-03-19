@@ -15,6 +15,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -37,4 +38,8 @@ public interface CracowGoApi {
 
     @POST("/paths/generate_path")
     Observable<Location[]> getLocationsForTag(@HeaderMap Map<String, String> headers, @Body LocationRequest requestBody);
+
+    @GET("/locations/near.json")
+    Observable<Location[]> getAllNearbyLocations(@HeaderMap Map<String, String> headers, @QueryMap Map<String, String> options);
+
 }

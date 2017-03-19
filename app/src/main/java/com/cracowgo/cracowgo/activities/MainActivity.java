@@ -1,5 +1,6 @@
 package com.cracowgo.cracowgo.activities;
 
+import android.content.Intent;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.cracowgo.cracowgo.R;
 import com.cracowgo.cracowgo.server.entities.Location;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView userEmailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_email_textView);
+        userEmailTextView.setText(getSharedPreferences(Constants.SHARED_PREFERENCES, 0).getString(Constants.userEmail, ""));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -97,21 +102,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_locations) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(MainActivity.this, LocationsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_tags) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_profile) {
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

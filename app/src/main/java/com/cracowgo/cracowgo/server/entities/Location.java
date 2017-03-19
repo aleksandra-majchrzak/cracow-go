@@ -30,6 +30,10 @@ public class Location implements Parcelable {
         return name;
     }
 
+    public Tag[] getTags() {
+        return tags;
+    }
+
     public Location(int id, String name, String description, double latitude, double longitude, Tag[] tags) {
         this.id = id;
         this.name = name;
