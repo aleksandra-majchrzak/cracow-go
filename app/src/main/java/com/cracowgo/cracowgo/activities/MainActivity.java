@@ -1,6 +1,8 @@
 package com.cracowgo.cracowgo.activities;
 
+import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -8,31 +10,48 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.cracowgo.cracowgo.R;
+import com.cracowgo.cracowgo.server.entities.Location;
+import com.cracowgo.cracowgo.utils.Constants;
+import com.cracowgo.cracowgo.utils.LocationHelper;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnMapReadyCallback,
+        LocationListener {
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ButterKnife.bind(this);
 
-        Button drawerButton = (Button) findViewById(R.id.drawer_button);
-        drawerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(Gravity.LEFT);
-            }
-        });
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -43,6 +62,11 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @OnClick(R.id.drawer_button)
+    public void onDrawerButtonClick() {
+        drawer.openDrawer(Gravity.LEFT);
     }
 
     @Override
@@ -90,5 +114,54 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        android.location.Location myLocation = LocationHelper.getLocation(this, this);
+        // Add a marker in Sydney and move the camera
+        if (myLocation != null) {
+            LatLng currentMyLocation = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(currentMyLocation).title("My current location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentMyLocation));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        }
+
+        Bundle locationsBundle = getIntent().getBundleExtra(Constants.locations);
+        if (locationsBundle != null) {
+            Parcelable[] locationsP = locationsBundle.getParcelableArray(Constants.locations);
+            Location[] locations = new Location[locationsP.length];
+            System.arraycopy(locationsP, 0, locations, 0, locationsP.length);
+
+
+            for (Location location : locations) {
+                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+
+                mMap.addMarker(new MarkerOptions().position(loc).title(location.getName())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            }
+        }
+    }
+
+    @Override
+    public void onLocationChanged(android.location.Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
