@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + "&mode=bicycling&" + parameters;
 
         return url;
     }
