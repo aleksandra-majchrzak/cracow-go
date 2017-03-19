@@ -47,7 +47,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Loca
         holder.locationNameTextView.setText(locations[position].getName());
 
         for (Tag tag : locations[position].getTags()) {
-            FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, 30);
+            FlexboxLayout.LayoutParams lp = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, 40);
 
             Button tagButton = new Button(context);
             tagButton.setText(tag.getName());

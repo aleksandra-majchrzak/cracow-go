@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.cracowgo.cracowgo.R;
 import com.cracowgo.cracowgo.server.CracowGoService;
@@ -25,6 +27,9 @@ public class SignInActivity extends AppCompatActivity implements SignInSubscribe
 
     @BindView(R.id.password_editText)
     EditText passwordEditText;
+
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,8 @@ public class SignInActivity extends AppCompatActivity implements SignInSubscribe
             return;
         }
 
+        progress.setVisibility(View.VISIBLE);
+
         User user = new User(email, password);
 
         CracowGoService.getInstance().signIn(user, this);
@@ -82,15 +89,18 @@ public class SignInActivity extends AppCompatActivity implements SignInSubscribe
     @Override
     public void onSignInError() {
         Snackbar.make(findViewById(R.id.activity_sign_in), "Sign in error", Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onConnectionError() {
         Snackbar.make(findViewById(R.id.activity_sign_in), R.string.connection_offline, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onUnknownError() {
         Snackbar.make(findViewById(R.id.activity_sign_in), R.string.error_occurred, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 }

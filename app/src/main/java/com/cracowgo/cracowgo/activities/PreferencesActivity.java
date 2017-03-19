@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.cracowgo.cracowgo.R;
 import com.cracowgo.cracowgo.server.CracowGoService;
@@ -25,6 +27,9 @@ public class PreferencesActivity extends AppCompatActivity implements UpdateUser
 
     @BindView(R.id.preferences_birth_year_editText)
     EditText birthEditText;
+
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,8 @@ public class PreferencesActivity extends AppCompatActivity implements UpdateUser
         user.setBirthDate(birthYear);
         user.setNationality(Locale.getDefault().getDisplayCountry());
 
+        progress.setVisibility(View.VISIBLE);
+
         CracowGoService.getInstance().updateUser(user, this, headers);
     }
 
@@ -64,15 +71,18 @@ public class PreferencesActivity extends AppCompatActivity implements UpdateUser
     @Override
     public void onUpdateUserError() {
         Snackbar.make(findViewById(R.id.activity_preferences), "Update error", Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onConnectionError() {
         Snackbar.make(findViewById(R.id.activity_preferences), R.string.connection_offline, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onUnknownError() {
         Snackbar.make(findViewById(R.id.activity_preferences), R.string.error_occurred, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 }
