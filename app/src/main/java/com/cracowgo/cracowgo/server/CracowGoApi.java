@@ -1,5 +1,7 @@
 package com.cracowgo.cracowgo.server;
 
+import com.cracowgo.cracowgo.server.entities.Location;
+import com.cracowgo.cracowgo.server.entities.LocationRequest;
 import com.cracowgo.cracowgo.server.entities.Tag;
 import com.cracowgo.cracowgo.server.entities.User;
 
@@ -32,4 +34,7 @@ public interface CracowGoApi {
 
     @GET("/tags")
     Observable<Tag[]> getTags(@HeaderMap Map<String, String> headers);
+
+    @POST("/paths/generate_path")
+    Observable<Location[]> getLocationsForTag(@HeaderMap Map<String, String> headers, @Body LocationRequest requestBody);
 }

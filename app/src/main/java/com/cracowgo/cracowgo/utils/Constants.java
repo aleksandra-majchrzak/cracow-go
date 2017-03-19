@@ -15,4 +15,6 @@ public class Constants {
     public static final String client = "client";
     public static final String expiry = "expiry";
     public static final String uid = "uid";
+
+    public static final String locations = "locations";
 }

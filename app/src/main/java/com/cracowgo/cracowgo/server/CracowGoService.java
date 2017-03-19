@@ -1,10 +1,13 @@
 package com.cracowgo.cracowgo.server;
 
+import com.cracowgo.cracowgo.server.entities.LocationRequest;
 import com.cracowgo.cracowgo.server.entities.User;
+import com.cracowgo.cracowgo.server.listeners.GetLocationsForTagSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.GetTagsSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.RegisterSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.SignInSubscriberListener;
 import com.cracowgo.cracowgo.server.listeners.UpdateUserSubscriberListener;
+import com.cracowgo.cracowgo.server.subscribers.GetLocationsForTagSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.GetTagsSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.RegisterSubscriber;
 import com.cracowgo.cracowgo.server.subscribers.SignInSubscriber;
@@ -79,6 +82,15 @@ public class CracowGoService {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new GetTagsSubscriber(listener));
+    }
+
+    public Subscription getLocationsForTag(Map<String, String> headers, int tagId, double latitude, double longitude, GetLocationsForTagSubscriberListener listener) {
+        LocationRequest request = new LocationRequest(tagId, latitude, longitude);
+
+        return mApi.getLocationsForTag(headers, request)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new GetLocationsForTagSubscriber(listener));
     }
 
 }
