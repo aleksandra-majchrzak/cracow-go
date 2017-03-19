@@ -1,17 +1,22 @@
 package com.cracowgo.cracowgo.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cracowgo.cracowgo.R;
+import com.cracowgo.cracowgo.activities.LocationActivity;
 import com.cracowgo.cracowgo.server.entities.Location;
 import com.cracowgo.cracowgo.server.entities.Tag;
+import com.cracowgo.cracowgo.utils.Constants;
 import com.google.android.flexbox.FlexboxLayout;
 
 import butterknife.BindView;
@@ -38,7 +43,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Loca
     }
 
     @Override
-    public void onBindViewHolder(LocationsViewHolder holder, int position) {
+    public void onBindViewHolder(LocationsViewHolder holder, final int position) {
         holder.locationNameTextView.setText(locations[position].getName());
 
         for (Tag tag : locations[position].getTags()) {
@@ -55,8 +60,24 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Loca
             }
             tagButton.setPadding(3, 3, 3, 3);
 
+            tagButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "tag clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             holder.tagsFlexBox.addView(tagButton);
         }
+
+        holder.rowLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, LocationActivity.class);
+                intent.putExtra(Constants.location, locations[position]);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -65,6 +86,9 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.Loca
     }
 
     class LocationsViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.location_row_ll)
+        LinearLayout rowLayout;
 
         @BindView(R.id.location_name_textView)
         TextView locationNameTextView;

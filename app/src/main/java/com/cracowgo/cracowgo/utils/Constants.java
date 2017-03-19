@@ -17,4 +17,5 @@ public class Constants {
     public static final String uid = "uid";
 
     public static final String locations = "locations";
+    public static final String location = "location";
 }

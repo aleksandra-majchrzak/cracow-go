@@ -34,6 +34,10 @@ public class Location implements Parcelable {
         return tags;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public Location(int id, String name, String description, double latitude, double longitude, Tag[] tags) {
         this.id = id;
         this.name = name;
