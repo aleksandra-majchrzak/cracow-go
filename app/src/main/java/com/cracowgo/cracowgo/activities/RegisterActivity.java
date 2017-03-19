@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.cracowgo.cracowgo.R;
 import com.cracowgo.cracowgo.server.CracowGoService;
@@ -28,6 +30,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterSubsc
 
     @BindView(R.id.confirm_password_editText)
     EditText confirmPasswordEditText;
+
+    @BindView(R.id.progress)
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterSubsc
             return;
         }
 
+        progress.setVisibility(View.VISIBLE);
+
         User user = new User(email, password);
 
         CracowGoService.getInstance().register(user, this);
@@ -94,15 +101,18 @@ public class RegisterActivity extends AppCompatActivity implements RegisterSubsc
     @Override
     public void onRegistrationError() {
         Snackbar.make(findViewById(R.id.activity_register), "Registration error", Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onConnectionError() {
         Snackbar.make(findViewById(R.id.activity_register), R.string.connection_offline, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onUnknownError() {
         Snackbar.make(findViewById(R.id.activity_register), R.string.error_occurred, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 }

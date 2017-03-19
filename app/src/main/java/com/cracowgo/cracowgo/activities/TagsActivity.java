@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.cracowgo.cracowgo.R;
 import com.cracowgo.cracowgo.server.CracowGoService;
@@ -29,12 +30,17 @@ public class TagsActivity extends AppCompatActivity implements GetTagsSubscriber
     @BindView(R.id.tags_listView)
     ListView tagsListView;
 
+    @BindView(R.id.progress)
+    ProgressBar progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tags);
 
         ButterKnife.bind(this);
+
+        progress.setVisibility(View.VISIBLE);
 
         CracowGoService.getInstance().getTags(HeadersGenerator.getHeaders(this), this);
     }
@@ -46,6 +52,8 @@ public class TagsActivity extends AppCompatActivity implements GetTagsSubscriber
         tagsListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        progress.setVisibility(View.GONE);
+
         tagsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -56,6 +64,9 @@ public class TagsActivity extends AppCompatActivity implements GetTagsSubscriber
                 if (myLocation == null) {
                     Snackbar.make(findViewById(R.id.activity_tags), "Cannot access location. Turn Localization on.", Snackbar.LENGTH_SHORT).show();
                 } else {
+
+                    progress.setVisibility(View.VISIBLE);
+
                     CracowGoService.getInstance().getLocationsForTag(
                             HeadersGenerator.getHeaders(TagsActivity.this),
                             tag.getId(),
@@ -70,6 +81,7 @@ public class TagsActivity extends AppCompatActivity implements GetTagsSubscriber
     @Override
     public void onGetTagsError() {
         Snackbar.make(findViewById(R.id.activity_tags), "Tags loading error", Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
@@ -87,17 +99,19 @@ public class TagsActivity extends AppCompatActivity implements GetTagsSubscriber
 
     @Override
     public void onGetLocationsError() {
-
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onConnectionError() {
         Snackbar.make(findViewById(R.id.activity_tags), R.string.connection_offline, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onUnknownError() {
         Snackbar.make(findViewById(R.id.activity_tags), R.string.error_occurred, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override

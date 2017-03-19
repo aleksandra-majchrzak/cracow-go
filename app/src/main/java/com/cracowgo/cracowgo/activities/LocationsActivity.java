@@ -7,6 +7,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.cracowgo.cracowgo.R;
 import com.cracowgo.cracowgo.adapters.LocationsAdapter;
@@ -24,12 +26,17 @@ public class LocationsActivity extends AppCompatActivity implements LocationList
     @BindView(R.id.locations_recyclerView)
     RecyclerView locationsRecyclerView;
 
+    @BindView(R.id.progress)
+    ProgressBar progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locations);
 
         ButterKnife.bind(this);
+
+        progress.setVisibility(View.VISIBLE);
 
         Location location = LocationHelper.getLocation(this, this);
 
@@ -72,20 +79,24 @@ public class LocationsActivity extends AppCompatActivity implements LocationList
         LocationsAdapter adapter = new LocationsAdapter(locations, this);
         locationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         locationsRecyclerView.setAdapter(adapter);
+
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onGetLocationsError() {
-
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onConnectionError() {
         Snackbar.make(findViewById(R.id.activity_locations), R.string.connection_offline, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 
     @Override
     public void onUnknownError() {
         Snackbar.make(findViewById(R.id.activity_locations), R.string.error_occurred, Snackbar.LENGTH_SHORT).show();
+        progress.setVisibility(View.GONE);
     }
 }
